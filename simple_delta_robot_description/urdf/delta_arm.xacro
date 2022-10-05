@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <!-- ==================================================================== -->
+  <!-- ==================================================================== -->
+  <!-- Important angle when robot at origin point, must be calculated!!!!!! -->
+  <xacro:property name="elbow_angle" value="${30*PI/180}" />
+  <!-- ==================================================================== -->
+  <!-- ==================================================================== -->
+  <xacro:property name="wrist_angle" value="-${elbow_angle}" />
+  <xacro:property name="mass" value="0.02" /> <!-- arbitrary value for mass -->
+  <xacro:property name="upper_width" value="0.04" /> <!-- Square dimensions (widthxwidth) of beams -->
+  <xacro:property name="lower_width" value="0.01" /> 
+  <xacro:property name="upper_height" value="0.2" /> <!-- base and end links -->
+  <xacro:property name="lower_height1" value="0.06" /> <!-- Upper link -->
+  <xacro:property name="lower_height2" value="0.5" /> <!-- lower link -->
+  <xacro:property name="lower_height3" value="0.03" /> <!-- Upper link -->
+
+  <xacro:include filename="$(find simple_delta_robot_description)/urdf/delta_arm.gazebo.xacro" />
+
+  <xacro:macro name="delta_arm" params="prefix">
+    <link name="${prefix}upper_link">
+      <collision>
+        <origin xyz="${upper_height/2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${upper_height} ${upper_width} ${upper_width}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="${upper_height/2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${upper_height} ${upper_width} ${upper_width}"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0.0 0.0 0.0 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 ${upper_height/2}" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (upper_width*upper_width + upper_width*upper_width)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (upper_height*upper_height + upper_width*upper_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (upper_height*upper_height + upper_width*upper_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}upper_joint" type="continuous">
+      <parent link="${prefix}upper_link"/>
+      <child link="${prefix}lower_top_link"/>
+      <origin xyz="${upper_height} 0 0" rpy="0 ${elbow_angle} 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="${prefix}lower_top_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_height1} ${lower_width}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_height1} ${lower_width}"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.2 0.2 0.2 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (lower_width*lower_width + lower_height1*lower_height1)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (lower_width*lower_width + lower_width*lower_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (lower_width*lower_width + lower_height1*lower_height1)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_top_rignt_joint" type="continuous">
+      <parent link="${prefix}lower_top_link"/>
+      <child link="${prefix}lower_right_link"/>
+      <origin xyz="0 ${-lower_height1/2} 0" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="${prefix}lower_right_link">
+      <collision>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_width} ${lower_height2}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_width} ${lower_height2}"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.2 0.2 0.2 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (lower_width*lower_width + lower_height2*lower_height2)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (lower_height2*lower_height2 + lower_width*lower_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (lower_width*lower_width + lower_width*lower_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_top_left_joint" type="continuous">
+      <parent link="${prefix}lower_top_link"/>
+      <child link="${prefix}lower_left_link"/>
+      <origin xyz="0 ${lower_height1/2} 0" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="${prefix}lower_left_link">
+      <collision>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_width} ${lower_height2}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_width} ${lower_height2}"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.2 0.2 0.2 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 ${-lower_height2/2}" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (lower_width*lower_width + lower_height2*lower_height2)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (lower_height2*lower_height2 + lower_width*lower_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (lower_width*lower_width + lower_width*lower_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_right_bottom_joint" type="continuous">
+      <parent link="${prefix}lower_right_link"/>
+      <child link="${prefix}lower_bottom_link"/>
+      <origin xyz="0 0 ${-lower_height2}" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="${prefix}lower_bottom_link">
+      <collision>
+        <origin xyz="0 ${lower_height1/2} 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_height1} ${lower_width}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 ${lower_height1/2} 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_width} ${lower_height1} ${lower_width}"/>
+        </geometry>
+        <material name="grey">
+          <color rgba="0.2 0.2 0.2 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="0 ${lower_height1/2} 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (lower_width*lower_width + lower_height1*lower_height1)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (lower_height1*lower_height1 + lower_width*lower_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (lower_width*lower_width + lower_width*lower_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_bottom_end_joint" type="continuous">
+      <parent link="${prefix}lower_bottom_link"/>
+      <child link="${prefix}lower_end_link"/>
+      <origin xyz="0 ${lower_height1/2} 0" rpy="0 ${wrist_angle} 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <link name="${prefix}lower_end_link">
+      <collision>
+        <origin xyz="${-lower_height3/2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_height3} ${lower_width} ${lower_width}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin xyz="${-lower_height3/2} 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${lower_height3} ${lower_width} ${lower_width}"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0.0 0.0 0.0 1.0"/>
+        </material>
+      </visual>
+      <inertial>
+        <origin xyz="${-lower_height3/2} 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia
+          ixx="${mass / 12.0 * (lower_width*lower_width + lower_width*lower_width)}" ixy="0.0" ixz="0.0"
+          iyy="${mass / 12.0 * (lower_height3*lower_height3 + lower_width*lower_width)}" iyz="0.0"
+          izz="${mass / 12.0 * (lower_height3*lower_height3 + lower_width*lower_width)}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_bottom_virtual_joint" type="continuous">
+      <parent link="${prefix}lower_bottom_link"/>
+      <child link="${prefix}lower_bottom_virtual_link"/>
+      <origin xyz="0 ${lower_height1} 0" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
+    </joint>
+
+    <link name="${prefix}lower_bottom_virtual_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia
+          ixx="0.001" ixy="0.0" ixz="0.0"
+          iyy="0.001" iyz="0.0"
+          izz="0.001"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}lower_left_virtual_joint" type="fixed">
+      <parent link="${prefix}lower_left_link"/>
+      <child link="${prefix}lower_left_virtual_link"/>
+      <origin xyz="0 0 ${-lower_height2}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}lower_left_virtual_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia
+          ixx="0.001" ixy="0.0" ixz="0.0"
+          iyy="0.001" iyz="0.0"
+          izz="0.001"/>
+      </inertial>
+    </link>
+
+    <gazebo>
+      <joint name="${prefix}lower_left_bottom_joint" type="fixed">
+        <parent>${prefix}lower_left_virtual_link</parent>
+        <child>${prefix}lower_bottom_virtual_link</child>
+        <pose> 0 0 0 0 0 0 </pose>
+      </joint>
+    </gazebo>
+
+    <xacro:delta_arm_gazebo prefix="${prefix}"/>
+  </xacro:macro>
+</robot>

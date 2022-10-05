@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <physics type='ode'>
+    <max_step_size>0.001</max_step_size>
+    <real_time_factor>0.1</real_time_factor>
+    <real_time_update_rate>1000</real_time_update_rate>
+    <gravity>0 0 -9.8</gravity>
+  </physics>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace></robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Orange</material>
+    <selfCollide>false</selfCollide>
+  </gazebo>
+
+  <gazebo reference="end_link">
+    <material>Gazebo/Orange</material>
+    <selfCollide>false</selfCollide>
+  </gazebo>
+
+  <transmission name="front_delta_arm_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="front_delta_arm_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="front_delta_arm_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="right_delta_arm_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="right_delta_arm_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_delta_arm_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="left_delta_arm_joint_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="left_delta_arm_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_delta_arm_joint_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+</robot>

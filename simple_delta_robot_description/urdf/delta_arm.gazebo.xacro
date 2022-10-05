@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="delta_arm_gazebo" params="prefix">
+    <gazebo reference="${prefix}upper_link">
+      <material>Gazebo/Black</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}lower_top_link">
+      <material>Gazebo/Grey</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}lower_right_link">
+      <material>Gazebo/Grey</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}lower_left_link">
+      <material>Gazebo/Grey</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}lower_bottom_link">
+      <material>Gazebo/Grey</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+    <gazebo reference="${prefix}lower_end_link">
+      <material>Gazebo/Black</material>
+      <selfCollide>false</selfCollide>
+    </gazebo>
+
+    <transmission name="${prefix}upper_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}upper_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}upper_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}lower_top_rignt_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}lower_top_rignt_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}lower_top_rignt_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}lower_top_left_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}lower_top_left_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}lower_top_left_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}lower_right_bottom_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}lower_right_bottom_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}lower_right_bottom_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}lower_bottom_end_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}lower_bottom_end_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}lower_bottom_end_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}lower_bottom_virtual_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}lower_bottom_virtual_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}lower_bottom_virtual_joint_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+</robot>

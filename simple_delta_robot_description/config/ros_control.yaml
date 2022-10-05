@@ -1,0 +1,66 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+delta_robot_position_controller:
+  type: effort_controllers/JointGroupPositionController
+  joints:
+     - front_delta_arm_joint
+     - right_delta_arm_joint
+     - left_delta_arm_joint
+  front_delta_arm_joint:
+    pid: {p: 50.0, i: 0.05, d: 0.1}
+  right_delta_arm_joint:
+    pid: {p: 50.0, i: 0.05, d: 0.1}
+  left_delta_arm_joint:
+    pid: {p: 50.0, i: 0.05, d: 0.1}
+
+delta_robot_trajectory_controller:
+  type: velocity_controllers/JointTrajectoryController
+  joints:
+     - front_delta_arm_joint
+     - right_delta_arm_joint
+     - left_delta_arm_joint
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    front_delta_arm_joint: {trajectory: 0.1, goal: 0.1}
+    right_delta_arm_joint: {trajectory: 0.1, goal: 0.1}
+    left_delta_arm_joint:  {trajectory: 0.1, goal: 0.1}
+  gains:
+    #!!These values have not been optimized!!
+    front_delta_arm_joint: {p: 50.0,  i: 0.05, d: 0.1, i_clamp: 1}
+    right_delta_arm_joint: {p: 50.0,  i: 0.05, d: 0.1, i_clamp: 1}
+    left_delta_arm_joint:  {p: 50.0,  i: 0.05, d: 0.1, i_clamp: 1}
+   # Use a feedforward term to reduce the size of PID gains
+  velocity_ff:
+    front_delta_arm_joint: 1.0
+    right_delta_arm_joint: 1.0
+    left_delta_arm_joint: 1.0
+  stop_trajectory_duration: 0.05
+  state_publish_rate: 50
+  action_monitor_rate: 20
+
+gazebo_ros_control:
+  pid_gains:
+    front_delta_arm_joint: {p: 50.0, i: 0.05, d: 0.1}
+    right_delta_arm_joint: {p: 50.0, i: 0.05, d: 0.1}
+    left_delta_arm_joint:  {p: 50.0, i: 0.05, d: 0.1}
+    front_upper_joint_trans: {p: 0, i: 0, d: 0}
+    front_lower_top_rignt_joint_trans: {p: 0, i: 0, d: 0}
+    front_lower_top_left_joint_trans: {p: 0, i: 0, d: 0}
+    front_lower_right_bottom_joint_trans: {p: 0, i: 0, d: 0}
+    front_lower_bottom_end_joint_trans: {p: 0, i: 0, d: 0}
+    front_lower_bottom_virtual_joint_trans: {p: 0, i: 0, d: 0}
+    right_upper_joint_trans: {p: 0, i: 0, d: 0}
+    right_lower_top_rignt_joint_trans: {p: 0, i: 0, d: 0}
+    right_lower_top_left_joint_trans: {p: 0, i: 0, d: 0}
+    right_lower_right_bottom_joint_trans: {p: 0, i: 0, d: 0}
+    right_lower_bottom_end_joint_trans: {p: 0, i: 0, d: 0}
+    right_lower_bottom_virtual_joint_trans: {p: 0, i: 0, d: 0}
+    left_upper_joint_trans: {p: 0, i: 0, d: 0}
+    left_lower_top_rignt_joint_trans: {p: 0, i: 0, d: 0}
+    left_lower_top_left_joint_trans: {p: 0, i: 0, d: 0}
+    left_lower_right_bottom_joint_trans: {p: 0, i: 0, d: 0}
+    left_lower_bottom_end_joint_trans: {p: 0, i: 0, d: 0}
+    left_lower_bottom_virtual_joint_trans: {p: 0, i: 0, d: 0}
